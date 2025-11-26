@@ -11,6 +11,7 @@ import {
   import MBank from "../../assets/images/svg/mbank.svg"
 import RadioButton from "../../ui/RadioButton";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { StatusBar } from "expo-status-bar";
   
   
   export const PaymentOptions = ({ navigation }) => {
@@ -18,6 +19,7 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
   
     return (
       <SafeAreaView style={styles.safe}>
+        <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.row}>
                 <TouchableOpacity style={styles.next} onPress={()=> navigation.goBack()}><Ionicons name="chevron-back" size={24} color="#000" /></TouchableOpacity>

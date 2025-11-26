@@ -14,6 +14,7 @@ import Navi from "../../assets/images/svg/navigate.svg";
 import ModalCenter from '../../ui/ModalCenter';
 import Succes from "../../assets/images/svg/succes.svg";
 import Calendar from '../../ui/Calendar';
+import { StatusBar } from 'expo-status-bar';
 
 const { width } = Dimensions.get('window');
 
@@ -47,6 +48,7 @@ export default function Recording({ route = {}, navigation = null, onConfirm = (
 
   return (
     <SafeAreaView style={styles.safe}>
+      <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
       <View style={styles.header}>
         <TouchableOpacity style={styles.next} onPress={() => navigation?.goBack()}>
           <Ionicons name="chevron-back" size={24} color="#000" />

@@ -10,11 +10,13 @@ import Notification from "../../assets/images/svg/notification.svg";
 import No from "../../assets/images/svg/no.svg";
 import { Menu } from "../../components/Menu";
 import AppText from "../../components/AppText";
+import { StatusBar } from "expo-status-bar";
 
 export const NoSubscription = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safe}>
+      <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
       <View style={styles.header}>
         <Logo />
         <TouchableOpacity

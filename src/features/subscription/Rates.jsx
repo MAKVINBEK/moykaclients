@@ -12,11 +12,13 @@ import { Menu } from "../../components/Menu";
 import AppText from "../../components/AppText";
 import { PLANS } from "./Subscription";
 import Succes from "../../assets/images/svg/succes.svg" 
+import { StatusBar } from "expo-status-bar";
 
 export const Rates = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safe}>
+      <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
       <View style={styles.header}>
         <Logo />
         <TouchableOpacity

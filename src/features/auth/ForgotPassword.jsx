@@ -9,6 +9,7 @@ import AppText from "../../components/AppText";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { forgotPassword } from "../../services/AuthService"; 
+import { StatusBar } from "expo-status-bar";
 
 export const ForgotPassword = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -35,6 +36,7 @@ export const ForgotPassword = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safe}>
+      <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <TouchableOpacity style={styles.next} onPress={() => navigation.goBack()}>
           <Ionicons name="chevron-back" size={24} color="#000" />

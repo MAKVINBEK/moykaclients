@@ -17,6 +17,7 @@ import MapListScreen from "./MapListScreen";
 import FilterBottomSheet from "./FilterBottomSheet";
 import { getList } from "../../services/AuthService"; 
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 
 export const Main = ({ navigation }) => {
   const [focused, setFocused] = useState(false);
@@ -62,6 +63,7 @@ export const Main = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safe}>
+      <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
       <View style={styles.header}>
         <Logo />
         <TouchableOpacity

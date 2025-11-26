@@ -12,6 +12,7 @@ import AppText from "../../components/AppText";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import CheckBox from "../../ui/CheckBox";
+import { StatusBar } from "expo-status-bar";
 
 export const Register = ({ navigation }) => {
   const [hidden, setHidden] = useState(true);
@@ -75,6 +76,7 @@ export const Register = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safe}>
+      <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <AppText style={styles.title} font="Inter">
           Создать аккаунт

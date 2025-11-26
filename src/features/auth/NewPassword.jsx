@@ -11,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AppText from "../../components/AppText";
 import { Ionicons } from "@expo/vector-icons";
 import { newPassword } from "../../services/AuthService"; 
+import { StatusBar } from "expo-status-bar";
 
 export const NewPassword = ({ navigation, route }) => {
   const {reset_token} = route.params;
@@ -41,6 +42,7 @@ export const NewPassword = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.safe}>
+      <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View>
           <TouchableOpacity style={styles.next} onPress={() => navigation.goBack()}>

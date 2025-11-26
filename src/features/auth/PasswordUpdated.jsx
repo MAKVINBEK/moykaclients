@@ -8,10 +8,12 @@ import {
   import AppText from "../../components/AppText";
   import { Ionicons } from "@expo/vector-icons";
   import Icons from "../../assets/images/succesfull.svg"  
+import { StatusBar } from "expo-status-bar";
   export const PasswordUpdated = ({ navigation }) => {
   
     return (
       <SafeAreaView style={styles.safe}>
+        <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             <View><TouchableOpacity style={styles.next} onPress={()=> navigation.goBack()}><Ionicons name="chevron-back" size={24} color="#000" /></TouchableOpacity></View>
             <View style={{marginTop:166,alignItems:"center"}}><Icons/></View>

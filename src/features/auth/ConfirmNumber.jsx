@@ -12,6 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import CodeInput from "../../ui/CodeInput";
 import { saveTokens } from "../../services/Api"; 
 import { sendCode, verifyCode } from "../../services/AuthService";
+import { StatusBar } from "expo-status-bar";
 
 export const ConfirmNumber = ({ navigation, route }) => {
   const { data, alreadySent = true } = route.params || {};
@@ -103,6 +104,7 @@ export const ConfirmNumber = ({ navigation, route }) => {
   };
   return (
     <SafeAreaView style={styles.safe}>
+      <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View>
           <TouchableOpacity style={styles.next} onPress={() => navigation.goBack()}>

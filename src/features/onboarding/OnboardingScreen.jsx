@@ -14,6 +14,7 @@ import Logo from "../../assets/images/svg/logo.svg";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import Arrow from "../../assets/images/svg/arrowarrow.svg"
+import { StatusBar } from "expo-status-bar";
 
 const { width: SCREEN_W } = Dimensions.get("window");
 
@@ -118,6 +119,7 @@ export default function OnboardingScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.safe}>
+      <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.logoContainer}>

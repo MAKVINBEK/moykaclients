@@ -11,12 +11,14 @@ import Notification from "../../assets/images/svg/notification.svg";
 import { Menu } from "../../components/Menu"; 
 import AppText from "../../components/AppText";
 import Succes from "../../assets/images/svg/succes.svg";
+import { StatusBar } from "expo-status-bar";
 
 export const RatesDetail = ({ navigation,route }) => {
   const { plan } = route.params;
 
   return (
     <SafeAreaView style={styles.safe}>
+      <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
       <View style={styles.header}>
         <Logo />
         <TouchableOpacity

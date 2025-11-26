@@ -9,10 +9,12 @@ import {
   import AppText from "../../components/AppText";
   import { Ionicons } from "@expo/vector-icons";
 import CodeInput from "../../ui/CodeInput";
+import { StatusBar } from "expo-status-bar";
   
   export const ConfirmationCard = ({ navigation }) => {
     return (
       <SafeAreaView style={styles.safe}>
+        <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
           <View style={styles.row}>
             <TouchableOpacity

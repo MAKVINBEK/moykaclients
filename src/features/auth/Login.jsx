@@ -13,6 +13,7 @@ import { styles } from "./Register";
 import { loginUser } from "../../services/AuthService"; 
 import Google from "../../assets/images/svg/googleLogo.svg";
 import Message from "../../assets/images/svg/Message.svg";
+import { StatusBar } from "expo-status-bar";
 
 export const Login = ({ navigation }) => {
   const [hidden, setHidden] = useState(true);
@@ -44,6 +45,7 @@ export const Login = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={styles.safe}>
+      <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <AppText style={styles.title} >
           Войти в аккаунт

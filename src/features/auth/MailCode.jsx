@@ -11,6 +11,7 @@ import AppText from "../../components/AppText";
 import { Ionicons } from "@expo/vector-icons";
 import CodeInput from "../../ui/CodeInput";
 import { forgotCode, sendCode } from "../../services/AuthService";
+import { StatusBar } from "expo-status-bar";
 
 export const MailCode = ({ navigation, route }) => {
   const { email } = route.params || {};
@@ -96,6 +97,7 @@ export const MailCode = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.safe}>
+      <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View>
           <TouchableOpacity style={styles.next} onPress={() => navigation.goBack()}>

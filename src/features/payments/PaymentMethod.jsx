@@ -8,10 +8,12 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppText from "../../components/AppText";
 import { Ionicons } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
 
 export const PaymentMethod = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safe}>
+      <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.row}>
           <TouchableOpacity

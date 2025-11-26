@@ -4,6 +4,7 @@ import { Menu } from "../../components/Menu";
 import { Ionicons } from "@expo/vector-icons";
 import AppText from "../../components/AppText";
 import Check from "../../assets/images/svg/check.svg" 
+import { StatusBar } from "expo-status-bar";
 
 const notifications = [
     { id: "1", text: "Вы успешно записаны на 14 сентября, 15:00", date: "09.09.24" },
@@ -16,6 +17,7 @@ const notifications = [
 export const Notification = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safe}>
+      <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
       <View style={styles.header}>
           <TouchableOpacity
             style={styles.next}

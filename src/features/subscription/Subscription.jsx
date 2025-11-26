@@ -15,6 +15,7 @@ import Svg, { Path } from "react-native-svg";
 import { Menu } from "../../components/Menu"; 
 import AppText from "../../components/AppText";
 import Succes from "../../assets/images/svg/succes.svg" 
+import { StatusBar } from "expo-status-bar";
 
 const { width } = Dimensions.get("window");
 
@@ -119,6 +120,7 @@ export const Subscription = ({
 
   return (
     <SafeAreaView style={styles.safe}>
+      <StatusBar style="dark" backgroundColor={styles.safe.backgroundColor} />
       <View style={styles.header}>
         <Logo />
         <TouchableOpacity
