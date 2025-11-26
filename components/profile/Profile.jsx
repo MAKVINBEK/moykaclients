@@ -61,11 +61,13 @@ export const Profile = ({ navigation }) => {
           <Notification />
         </TouchableOpacity>
       </View>
-      <ScrollView>
+      <ScrollView 
+      contentContainerStyle={{ paddingBottom: 140 }}
+          showsVerticalScrollIndicator={false}>
         <View style={styles.block}>
             <TouchableOpacity style={styles.change} onPress={()=>navigation.navigate("VehicleData")}><Change/></TouchableOpacity>
             <View style={{alignItems:"center"}}>
-                <Image source={require("../../assets/images/mers.png")}/>
+                <Image resizeMode="contain" style={{width:270,height:160,}} source={response.avatar?response.avatar:require("../../assets/images/mers.png")}/>
           <AppText style={styles.model}>Toyota Camry</AppText>
             </View>
           <View
@@ -97,7 +99,7 @@ export const Profile = ({ navigation }) => {
             </View>
           </View>
         </View>
-        <TouchableOpacity style={styles.page} onPress={()=>navigation.navigate("PersonalData")}>
+        <TouchableOpacity style={styles.page} onPress={()=>navigation.navigate("VehicleData")}>
             <View style={styles.icon}><ProfileIcon/></View>
             <AppText style={styles.text}>Личные данные</AppText>
             <View style={styles.arrow}><Arrow/></View>

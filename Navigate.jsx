@@ -55,9 +55,8 @@ export default function Navigate() {
   });
 
   const [isFirstLaunch, setIsFirstLaunch] = React.useState(null);
-  const [isLogged, setIsLogged] = React.useState(null); // <--- ДОБАВИЛИ
+  const [isLogged, setIsLogged] = React.useState(null);
 
-  // Проверка онбординга
   React.useEffect(() => {
     const checkFirstLaunch = async () => {
       const already = await AsyncStorage.getItem("alreadyLaunched");
@@ -71,7 +70,6 @@ export default function Navigate() {
     checkFirstLaunch();
   }, []);
 
-  // Проверка токена
   React.useEffect(() => {
     const checkToken = async () => {
       const token = await AsyncStorage.getItem("access");
@@ -80,7 +78,6 @@ export default function Navigate() {
     checkToken();
   }, []);
 
-  // Пока загружаются шрифты и онбординг и токен
   if (!fontsLoaded || isFirstLaunch === null || isLogged === null) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

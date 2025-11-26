@@ -70,7 +70,6 @@ export default function ScannerScreen({ navigation }) {
         }
       />
 
-      {/* Верхняя кнопка закрытия */}
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={styles.closeBtn}
@@ -78,7 +77,6 @@ export default function ScannerScreen({ navigation }) {
         <Ionicons name="close" size={26} color="#000" />
       </TouchableOpacity>
 
-      {/* Затемнение + область сканирования */}
       <View style={styles.overlay}>
         <View style={styles.maskTop} >
         <Text style={styles.scanText}>Наведите камеру на QR</Text>
@@ -107,7 +105,6 @@ export default function ScannerScreen({ navigation }) {
             <Add/>
           </View>
 
-          {/* Кнопки снизу */}
           <View style={styles.bottomRow}>
             <TouchableOpacity
               style={styles.instructionBtn}

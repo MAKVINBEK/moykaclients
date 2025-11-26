@@ -55,6 +55,10 @@ export const newPassword = (reset_token, password, confirm_password) =>
     )
     .then((r) => r.data);
 
+
+
+
+
 export const getPerson = () =>
   api.get("/user/user-profile/").then((res) => res.data);
 
@@ -64,7 +68,6 @@ export const getProfile = () =>
 export const patchMyCarProfile = (payload) =>
   api.put("/main/mycar-profile/", payload).then((r) => r.data);
 
-// категории/справочники
 export const getMarkas = (params = {}) =>
   api.get("/main/category/marka/", { params }).then((r) => r.data);
 
@@ -79,6 +82,11 @@ export const getHistory = (params = {}) =>
 
 export const getFaq = (params = {}) =>
   api.get("/main/faqs/", { params }).then((r) => r.data);
+
+export const getList = (params = {}) =>
+  api.get("/payment/car-wash/", { params }).then((r) => r.data);
+
+
 
 
 

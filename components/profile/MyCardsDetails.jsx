@@ -12,6 +12,7 @@ import {
   import Delet from "../../assets/images/svg/delete.svg"
   import Edit from "../../assets/images/svg/edit.svg"
 import ModalCenter from "../../ui/ModalCenter";
+import { StatusBar } from "expo-status-bar";
 
   export const MyCardsDetails = ({ navigation }) => {
     const [showModal, setShowModal] = useState(false);

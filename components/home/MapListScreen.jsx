@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// home/MapListScreen.js
+import React from "react";
 import {
   View,
   StyleSheet,
@@ -9,30 +10,33 @@ import {
   Image,
 } from "react-native";
 import AppText from "../../AppText";
-import Categoty from "../../assets/images/svg/category.svg"
-import CategotyLigh from "../../assets/images/svg/categotyLigh.svg"
-import Vector from "../../assets/images/svg/vector.svg"
-import VectorDark from "../../assets/images/svg/vectorDark.svg"
+import Categoty from "../../assets/images/svg/category.svg";
+import CategotyLigh from "../../assets/images/svg/categotyLigh.svg";
+import Vector from "../../assets/images/svg/vector.svg";
+import VectorDark from "../../assets/images/svg/vectorDark.svg";
 import { useNavigation } from "@react-navigation/native";
 import MapScreen from "../screens/MapScreen";
 
 const { width, height } = Dimensions.get("window");
 
-// Заменяй этот компонент на свою карту 2GIS
-const MapPlaceholder = () => (
+const MapPlaceholder = ({ points = [] }) => (
   <View style={styles.mapPlaceholder}>
-    <MapScreen/>
+    <MapScreen
+      points={points.map((p) => ({
+        id: p.id,
+        name: p.name || p.title,
+        latitude: p.latitude != null ? Number(p.latitude) : undefined,
+        longitude: p.longitude != null ? Number(p.longitude) : undefined,
+      }))}
+    />
   </View>
 );
 
+export default function MapListScreen({ points = [] }) {
+  const [mode, setMode] = React.useState("list");  
 
-
-export default function MapListScreen({DATA=[]}) {
-  const [mode, setMode] = React.useState("list"); 
-  const anim = React.useRef(
-    new Animated.Value(mode === "list" ? 1 : 0)
-  ).current;
-  const navigation = useNavigation()
+  const anim = React.useRef(new Animated.Value(mode === "list" ? 1 : 0)).current;
+  const navigation = useNavigation();
 
   React.useEffect(() => {
     Animated.timing(anim, {
@@ -44,22 +48,20 @@ export default function MapListScreen({DATA=[]}) {
 
   const listTranslateY = anim.interpolate({
     inputRange: [0, 1],
-    outputRange: [height,0], // когда открыт - отступ сверху (чтобы показать заголовок)
+    outputRange: [height, 0],
   });
 
   const mapOpacity = anim.interpolate({
     inputRange: [0, 1],
-    outputRange: [1, 0], // карта скрывается под списком
+    outputRange: [1, 0],
   });
 
   return (
     <View style={styles.safe}>
-      {/* Карта */}
       <Animated.View style={[styles.mapContainer, { opacity: mapOpacity }]}>
-        <MapPlaceholder />
+        <MapPlaceholder points={points} />
       </Animated.View>
 
-      {/* Список (анимированное) */}
       <Animated.View
         style={[
           styles.animatedList,
@@ -71,44 +73,57 @@ export default function MapListScreen({DATA=[]}) {
           contentContainerStyle={{ paddingBottom: 140 }}
           showsVerticalScrollIndicator={false}
         >
-          {DATA.map((item) => (
-            <View key={item.id} style={styles.card}>
-              <View style={styles.row}>
-                <Image style={styles.logo}  source={require("../../assets/images/image.png")}/>
-                <View style={{ flex: 1, marginLeft: 10 }}>
-                  <AppText style={styles.title}>{item.title}</AppText>
-                  <AppText style={styles.sub}>{item.hours}</AppText>
-                  <AppText style={styles.sub}>{item.address}</AppText>
-                </View>
-
-                <View style={{ alignItems: "flex-end" }}>
-                  <AppText style={styles.rating}>
-                    ★{" "}
-                    <AppText
-                      style={{
-                        color: "#2B2929",
-                        fontSize: 14,
-                        fontWeight: 600,
-                      }}
-                    >
-                      {item.rating}
+          {points.map((item) => {
+            return (
+              <View key={item.id} style={styles.card}>
+                <View style={styles.row}>
+                  <Image style={styles.logo} source={item.img} />
+                  <View style={{ flex: 1, marginLeft: 10 }}>
+                    <AppText style={styles.title}>
+                      {item.name}
                     </AppText>
-                  </AppText>
-                  <AppText style={styles.distance}>{item.distance}</AppText>
+                    <AppText style={styles.sub}>
+                      {item.open_time} - {item.closing_time}
+                    </AppText>
+                    <AppText style={styles.sub}>
+                      {item.address }
+                    </AppText>
+                  </View>
+
+                  <View style={{ alignItems: "flex-end" }}>
+                    <AppText style={styles.rating}>
+                      ★{" "}
+                      <AppText
+                        style={{
+                          color: "#2B2929",
+                          fontSize: 14,
+                          fontWeight: "600",
+                        }}
+                      >
+                        {item.rating}
+                      </AppText>
+                    </AppText>
+                    <AppText style={styles.distance}>
+                      {item.distance || "1.2 км"}
+                    </AppText>
+                  </View>
+                </View>
+
+                <View style={styles.buttonsRow}>
+                  <TouchableOpacity
+                    style={styles.btnPrimary}
+                    onPress={() => navigation.navigate("Recording")}
+                  >
+                    <AppText style={styles.btnPrimaryText}>Записаться</AppText>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.btnOutline}>
+                    <AppText style={styles.btnOutlineText}>Маршрут</AppText>
+                  </TouchableOpacity>
                 </View>
               </View>
-
-              <View style={styles.buttonsRow}>
-                <TouchableOpacity style={styles.btnPrimary} onPress={()=>navigation.navigate("Recording")}>
-                  <AppText style={styles.btnPrimaryText}>Записаться</AppText>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.btnOutline}>
-                  <AppText style={styles.btnOutlineText}>Маршрут</AppText>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ))}
+            );
+          })}
         </ScrollView>
       </Animated.View>
 
@@ -117,12 +132,9 @@ export default function MapListScreen({DATA=[]}) {
         <View style={styles.switchWrap}>
           <TouchableOpacity
             onPress={() => setMode("list")}
-            style={[
-              styles.switchBtn,
-              mode === "list" ? styles.switchActive : null,
-            ]}
+            style={[styles.switchBtn, mode === "list" ? styles.switchActive : null]}
           >
-            {mode==="list"?<CategotyLigh/>:<Categoty />}
+            {mode === "list" ? <CategotyLigh /> : <Categoty />}
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -133,7 +145,7 @@ export default function MapListScreen({DATA=[]}) {
               { marginLeft: 8 },
             ]}
           >
-              {mode==="map"?<Vector/>:<VectorDark />}
+            {mode === "map" ? <Vector /> : <VectorDark />}
           </TouchableOpacity>
         </View>
       </View>
@@ -145,18 +157,16 @@ const styles = StyleSheet.create({
   safe: {
     height: height * 0.76,
   },
-
   // карта на весь экран
   mapContainer: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "transparent",
-    borderRadius:30,
-    overflow:"hidden"
+    borderRadius: 30,
+    overflow: "hidden",
   },
   mapPlaceholder: {
-    flex:1,
+    flex: 1,
   },
-
   // анимированный список, поверх карты, с радиусом сверху
   animatedList: {
     position: "absolute",
@@ -167,7 +177,6 @@ const styles = StyleSheet.create({
   listScroll: {
     marginTop: 0,
   },
-
   card: {
     backgroundColor: "#fff",
     borderRadius: 16,
@@ -190,7 +199,7 @@ const styles = StyleSheet.create({
   sub: { fontSize: 14, color: "#A4A4A4", marginTop: 4 },
 
   rating: { color: "#FFcc02", fontWeight: "700", fontSize: 18 },
-  distance: { fontWeight: 500, color: "#9EA9B7", marginTop: 32 },
+  distance: { fontWeight: "500", color: "#9EA9B7", marginTop: 32 },
 
   buttonsRow: {
     marginTop: 10,
@@ -217,7 +226,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     backgroundColor: "#fff",
   },
-  btnOutlineText: { color: "#3083FF", fontWeight: "700",fontSize:16, },
+  btnOutlineText: { color: "#3083FF", fontWeight: "700", fontSize: 16 },
 
   bottomContainer: {
     position: "absolute",

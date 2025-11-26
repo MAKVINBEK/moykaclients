@@ -1,4 +1,3 @@
-// VehicleData.js
 import React, { useEffect, useState, useCallback } from "react";
 import {
   Image,
@@ -27,60 +26,78 @@ import {
 export const VehicleData = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-
   const [markas, setMarkas] = useState([]);
   const [models, setModels] = useState([]);
   const [bodies, setBodies] = useState([]);
-
+  const [modelsLoading, setModelsLoading] = useState(false);
   const [brandId, setBrandId] = useState(null);
   const [modelId, setModelId] = useState(null);
   const [categoryId, setCategoryId] = useState(null);
   const [plate, setPlate] = useState("");
-  const [image, setImage] = useState(null); // { uri }
-
+  const [image, setImage] = useState(null);
   const [profileData, setProfileData] = useState();
 
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        const [markaList, modelList, bodyList, profile] = await Promise.all([
+        const [markaList, , bodyList, profile] = await Promise.all([
           getMarkas(),
           getModels(),
           getBodies(),
           getProfile(),
         ]);
-        console.log(modelList);
-        
-
-        setProfileData(profile || [])
+  
+        setProfileData(profile || []);
         setMarkas(markaList || []);
-        setModels(modelList || []);
         setBodies(bodyList || []);
-console.log(profile);
-
-        
-
-        const resolveId = (val) => {
-          if (val == null) return null;
-          if (typeof val === "object") return val.id ?? null;
-          return val;
-        };
-
-        setBrandId(resolveId(profile?.brand ?? profile?.marka ?? profile?.brand_id));
-        setModelId(resolveId(profile?.model ?? profile?.model_id));
-        setCategoryId(resolveId(profile?.category ?? profile?.body ?? profile?.category_id));
-        setPlate(profile?.number ?? profile?.number_plate ?? "");
+  
+        let startBrand = null;
+  
+        if (profile?.marka || profile?.brand_id) {
+          startBrand = profile?.marka?.id ?? profile?.brand_id ?? null;
+        } else if (markaList && markaList.length > 0) {
+          startBrand = markaList[0].id;    // 👈 первая марка из списка
+        }
+  
+        setBrandId(startBrand);
+        setPlate(profile?.gos_number ?? "");
         if (profile?.image) setImage({ uri: profile.image });
       } catch (e) {
-        console.warn("Load VehicleData error:", e);
-        Alert.alert("Ошибка", "Не удалось загрузить данные. Попробуйте ещё раз.");
+        Alert.alert("Ошибка", "Не удалось загрузить данные.");
       } finally {
         setLoading(false);
       }
     })();
   }, []);
   
+
+  useEffect(() => {
+    let mounted = true;
+    const loadModelsForBrand = async (brand) => {
+      if (!brand) {
+        setModels([]);
+        setModelId(null);
+        return;
+      }
+      setModelsLoading(true);
+      setModels([]);
+      setModelId(null);
+      try {
+        const result = await getModels({ marka: brand });
+        if (mounted) setModels(result || []);
+      } catch (e) {
+        console.warn("getModels error:", e);
+        if (mounted) Alert.alert("Ошибка", "Не удалось загрузить модели для выбранной марки");
+      } finally {
+        if (mounted) setModelsLoading(false);
+      }
+    };
+    loadModelsForBrand(brandId);
+    return () => {
+      mounted = false;
+    };
+  }, [brandId]);
 
   const onSave = useCallback(async () => {
     setSaving(true);
@@ -91,20 +108,18 @@ console.log(profile);
         body: categoryId,
         gos_number: plate,
       };
-
       await patchMyCarProfile(payload);
-      navigation.goBack();
+      navigation.navigate("Profile");
     } catch (err) {
-      console.warn("PATCH error:", err);
       Alert.alert(
         "Ошибка",
-        (err?.response?.data && JSON.stringify(err.response.data)) || "Не удалось сохранить"
+        (err?.response?.data && JSON.stringify(err.response.data)) ||
+          "Не удалось сохранить"
       );
     } finally {
       setSaving(false);
     }
   }, [brandId, modelId, categoryId, plate, navigation]);
-
 
   if (loading) {
     return (
@@ -117,14 +132,12 @@ console.log(profile);
   const renderItems = (list) =>
     (list || []).map((it) => {
       const id = it.id;
-      const label = it.model ?? it.marka ?? it.kuzov ??  String(id);
+      const label = it.model ?? it.marka ?? it.kuzov ?? String(id);
       return <Picker.Item key={id} label={label} value={id} />;
     });
 
-  // When brand changes, clear model selection (common UX)
   const onBrandChange = (val) => {
     setBrandId(val);
-    setModelId(null);
   };
 
   return (
@@ -138,7 +151,11 @@ console.log(profile);
         <View style={{ width: 60 }} />
       </View>
 
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.container}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 140 }}
+      >
         <View style={styles.block}>
           <TouchableOpacity style={styles.change}>
             <Change />
@@ -152,7 +169,7 @@ console.log(profile);
         <AppText style={styles.label}>Марка</AppText>
         <View style={styles.select}>
           <Picker selectedValue={brandId} onValueChange={onBrandChange} style={styles.picker}>
-            <Picker.Item label={profileData?.marka?profileData?.marka:"Выберите марку"} value={null} />
+            <Picker.Item label={/*profileData?.marka ? profileData?.marka :*/ "Выберите марку"} value={profileData?.marka} />
             {renderItems(markas)}
           </Picker>
         </View>
@@ -160,7 +177,7 @@ console.log(profile);
         <AppText style={styles.label}>Модель</AppText>
         <View style={styles.select}>
           <Picker selectedValue={modelId} onValueChange={setModelId} style={styles.picker}>
-            <Picker.Item label="Выберите модель" value={null} />
+            <Picker.Item label={modelsLoading ? "Загрузка моделей..." : "Выберите модель"} value={null} />
             {renderItems(models)}
           </Picker>
         </View>
